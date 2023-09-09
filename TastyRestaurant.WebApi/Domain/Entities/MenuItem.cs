@@ -1,10 +1,24 @@
-﻿namespace TastyRestaurant.WebApi.Domain.Entities;
+﻿using TastyRestaurant.WebApi.Domain.Abstract;
 
-public class MenuItem
+namespace TastyRestaurant.WebApi.Domain.Entities;
+
+public sealed class MenuItem : Entity<Guid>
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public MenuItemCategory Category { get; set; }
-    public decimal Price { get; set; }
-    public string Image { get; set; }
+    public string Name { get; private set; }
+    public MenuItemCategory Category { get; private set; }
+    public decimal Price { get; private set; }
+    public string Image { get; private set; }
+
+    private MenuItem(Guid id, string name, MenuItemCategory category, decimal price, string image) : base(id)
+    {
+        Name = name;
+        Category = category;
+        Price = price;
+        Image = image;
+    }
+
+    public static MenuItem Create(Guid id, string name, MenuItemCategory category, decimal price, string image)
+    {
+        return new MenuItem(id, name, category, price, image);
+    }
 }

@@ -11,9 +11,6 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
 {
     public async Task<Order> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        return new Order
-        {
-            Id = 10
-        };
+        return Order.CreateOrder(Guid.NewGuid(), Guid.NewGuid(), new List<OrderItem>());
     }
 }

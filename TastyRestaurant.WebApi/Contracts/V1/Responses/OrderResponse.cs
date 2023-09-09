@@ -3,9 +3,9 @@
 namespace TastyRestaurant.WebApi.Contracts.V1.Responses;
 
 public record OrderResponse(
-    int Id,
+    Guid Id,
     OrderStatusEnumContract Status, 
-    int UserId, 
+    Guid UserId, 
     List<OrderItemResponse> OrderItems, 
     decimal Price, 
     DateTime CreationDate, 

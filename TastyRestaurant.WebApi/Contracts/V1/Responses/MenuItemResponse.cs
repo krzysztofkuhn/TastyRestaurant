@@ -1,7 +1,7 @@
 ﻿namespace TastyRestaurant.WebApi.Contracts.V1.Responses;
 
 public record MenuItemResponse(
-    int Id,
+    Guid Id,
     string Name,
     MenuItemCategoryResponse Category,
     decimal Price,

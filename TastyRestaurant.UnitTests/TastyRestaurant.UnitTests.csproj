@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TastyRestaurant.WebApi\TastyRestaurant.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>
