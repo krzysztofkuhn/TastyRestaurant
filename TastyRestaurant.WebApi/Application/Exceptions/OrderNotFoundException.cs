@@ -2,5 +2,5 @@
 
 public class OrderNotFoundException : Exception
 {
-    public OrderNotFoundException(string message) : base(message) { }
+    public OrderNotFoundException(Guid orderId) : base($"Order with given id doesn't exist. Id: {orderId}") { }
 }

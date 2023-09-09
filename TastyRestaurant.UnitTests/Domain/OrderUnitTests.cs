@@ -3,7 +3,7 @@ using TastyRestaurant.WebApi.Domain.Entities;
 using TastyRestaurant.WebApi.Domain.Enums;
 using TastyRestaurant.WebApi.Domain.Exceptions;
 
-namespace TastyRestaurant.UnitTests;
+namespace TastyRestaurant.UnitTests.Domain;
 
 public class OrderUnitTests
 {
@@ -129,9 +129,9 @@ public class OrderUnitTests
     {
         var data = new[]
         {
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Cancelled) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Completed) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Ready) }
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Cancelled) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Completed) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Ready) }
         };
 
         return data;
@@ -166,9 +166,9 @@ public class OrderUnitTests
     {
         var data = new[]
         {
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Cancelled) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Completed) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Ready) }
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Cancelled) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Completed) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Ready) }
         };
 
         return data;
@@ -204,9 +204,9 @@ public class OrderUnitTests
     {
         var data = new[]
         {
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Created) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Cancelled) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Completed) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Created) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Cancelled) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Completed) },
         };
 
         return data;
@@ -233,8 +233,8 @@ public class OrderUnitTests
     {
         var data = new[]
         {
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Created) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Ready) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Created) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Ready) },
         };
 
         return data;
@@ -252,36 +252,11 @@ public class OrderUnitTests
     {
         var data = new[]
         {
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Completed) },
-            new object[] { GetOrderWithStatus(OrderStatusEnum.Cancelled) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Completed) },
+            new object[] { OrderSampleDataFactory.GetOrderWithStatus(OrderStatusEnum.Cancelled) },
         };
 
         return data;
-    }
-    #endregion
-
-    #region Data
-    private static Order GetOrderWithStatus(OrderStatusEnum status)
-    {
-        var sampleBeefOrder = Order.Create(Guid.NewGuid(), Guid.NewGuid(), new[] { OrderItem.Create(MenuItemSampleData.BeefTartare, 1) });
-
-        switch (status)
-        {
-            case OrderStatusEnum.Created:
-                return sampleBeefOrder;
-            case OrderStatusEnum.Ready:
-                sampleBeefOrder.Ready();
-                return sampleBeefOrder;
-            case OrderStatusEnum.Completed:
-                sampleBeefOrder.Ready();
-                sampleBeefOrder.Complete();
-                return sampleBeefOrder;
-            case OrderStatusEnum.Cancelled:
-                sampleBeefOrder.Cancel();
-                return sampleBeefOrder;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(status), status, null);
-        }
     }
     #endregion
 }

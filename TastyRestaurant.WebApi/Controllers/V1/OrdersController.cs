@@ -65,7 +65,7 @@ namespace TastyRestaurant.WebApi.Controllers.V1
         
         [HttpPut]
         [Route(ApiRoutes.Orders.Update)]
-        public async Task<IActionResult> Update([FromRoute] uint orderId, [FromBody] UpdateOrderRequest updateOrderRequest)
+        public async Task<IActionResult> Update([FromRoute] Guid orderId, [FromBody] UpdateOrderRequest updateOrderRequest)
         {
             try
             {

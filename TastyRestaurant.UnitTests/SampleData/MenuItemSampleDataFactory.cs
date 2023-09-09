@@ -2,7 +2,7 @@
 
 namespace TastyRestaurant.UnitTests.SampleData;
 
-public class MenuItemSampleData
+internal class MenuItemSampleData
 {
     public static MenuItemCategory StartersCategory = MenuItemCategory.Create(Guid.NewGuid(), "Starters");
     public static MenuItemCategory SaladsCategory = MenuItemCategory.Create(Guid.NewGuid(), "Salads");
@@ -37,4 +37,30 @@ public class MenuItemSampleData
     public static MenuItem Water = MenuItem.Create(Guid.NewGuid(), "Water 0.5L", BeveragesCategory, 10, "water.jpg");
     public static MenuItem CocaCola = MenuItem.Create(Guid.NewGuid(), "Coca-Cola 0.2L", BeveragesCategory, 11, "cocaCola.jpg");
     public static MenuItem OrangeJuice = MenuItem.Create(Guid.NewGuid(), "Orange Juice 0.2L", BeveragesCategory, 12, "orangeJuice.jpg");
+
+    public static List<MenuItem> All = new()
+    {
+        FrenchOnionSoup,
+        Prawns,
+        BeefTartare,
+        SeafoodStarter,
+        BeefCarpaccio,
+        CheeseSalad,
+        ChefsSalad,
+        GoatCheeseSalad,
+        Steak,
+        GrilledChicken,
+        Burger,
+        Duck,
+        Mussels,
+        LemonTart,
+        ChocolateCake,
+        IceCream,
+        LavaCake,
+        Brownie,
+        Beer,
+        Water,
+        CocaCola,
+        OrangeJuice
+    };
 }
