@@ -42,7 +42,7 @@ public sealed class Order : AggregateRoot<Guid>
     }
 
     // factory method for creating initial order
-    public static Order CreateOrder(Guid id, Guid userId, IEnumerable<OrderItem> initialOrderItems)
+    public static Order Create(Guid id, Guid userId, IEnumerable<OrderItem> initialOrderItems)
     {
         if (id == Guid.Empty)
             throw new GuidRequiredException("Invalid order id guid. Order id is required.");
@@ -81,17 +81,17 @@ public sealed class Order : AggregateRoot<Guid>
     }
 
     // method to mark order as ready to pickup/deliver
-    public void MarkAsReady()
+    public void Ready()
     {
         // setting 'ready' status available only from 'created' status
         if (Status == OrderStatusEnum.Completed)
             throw new InvalidStatusChangeException("Cannot mark order as 'Ready'. Order already completed.");
         
         if (Status == OrderStatusEnum.Ready)
-            throw new InvalidStatusChangeException("Cannot change order to 'Ready' status. Order status already set to 'Ready'.");
+            throw new InvalidStatusChangeException("Cannot change order to 'Ready'. Order status already set to 'Ready'.");
 
         if (Status == OrderStatusEnum.Cancelled)
-            throw new InvalidStatusChangeException("Cannot change order to 'Ready' status. Order already cancelled.");
+            throw new InvalidStatusChangeException("Cannot change order to 'Ready'. Order already cancelled.");
 
         // not possible to mark empty order 
 
@@ -105,13 +105,13 @@ public sealed class Order : AggregateRoot<Guid>
     {
         // setting 'complete' status available only from 'ready' status
         if (Status == OrderStatusEnum.Completed)
-            throw new InvalidStatusChangeException("Cannot mark order as 'Ready'. Order already completed.");
+            throw new InvalidStatusChangeException("Cannot mark order as 'Completed'. Order already completed.");
 
-        if (Status == OrderStatusEnum.Ready)
-            throw new InvalidStatusChangeException("Cannot change order to 'Ready' status. Order status already set to 'Ready'.");
+        if (Status == OrderStatusEnum.Created)
+            throw new InvalidStatusChangeException("Cannot change order to 'Completed'. Order is just created, is not ready yet.");
 
         if (Status == OrderStatusEnum.Cancelled)
-            throw new InvalidStatusChangeException("Cannot change order to 'Ready' status. Order already cancelled.");
+            throw new InvalidStatusChangeException("Cannot change order to 'Completed'. Order already cancelled.");
 
         // change status
         Status = OrderStatusEnum.Completed;

@@ -10,6 +10,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
 {
     public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        return Order.CreateOrder(Guid.NewGuid(), Guid.NewGuid(), new List<OrderItem>());
+        return Order.Create(Guid.NewGuid(), Guid.NewGuid(), new List<OrderItem>());
     }
 }
