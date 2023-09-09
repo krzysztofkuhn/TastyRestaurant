@@ -9,17 +9,17 @@
         public static class Guests
         {
             public const string GetAll = $"{Base}/guests";
-            public const string Get = $"{Base}/guests/{{orderId}}";
+            public const string Get = $"{Base}/guests/{{userId:guid}}";
             public const string Create = $"{Base}/guests/";
-            public const string Update = $"{Base}/guests/{{orderId}}";
+            public const string Update = $"{Base}/guests/{{userId:guid}}";
         }
 
         public static class Orders
         {
             public const string GetAll = $"{Base}/orders/";
-            public const string Get = $"{Base}/orders/{{orderId}}";
+            public const string Get = $"{Base}/orders/{{orderId:guid}}";
             public const string Create = $"{Base}/orders/";
-            public const string Update = $"{Base}/orders/{{orderId}}";
+            public const string Update = $"{Base}/orders/{{orderId:guid}}";
         }
 
         public static class MenuItems

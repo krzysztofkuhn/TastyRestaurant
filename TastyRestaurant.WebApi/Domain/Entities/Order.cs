@@ -9,7 +9,7 @@ namespace TastyRestaurant.WebApi.Domain.Entities;
 public sealed class Order : AggregateRoot<Guid>
 {
     // original order items list - encapsulated
-    private List<OrderItem> _orderItems;
+    private readonly List<OrderItem> _orderItems;
 
     public OrderStatusEnum Status { get; private set; }
     public Guid UserId { get; private set; }
@@ -61,23 +61,6 @@ public sealed class Order : AggregateRoot<Guid>
             throw new OrderAlreadyProcessedException("Making order items changes is not possible. Order has already been processed.");
 
         SetOrderItemsCollection(orderItems);
-    }
-
-    private void SetOrderItemsCollection(IEnumerable<OrderItem> orderItems)
-    {
-        // verify if order has any items
-        if (orderItems  == null || !orderItems.Any())
-            throw new CannotCreateEmptyOrderException("No items ordered. Cannot create empty order.");
-
-        // group order items - if we have multiple times the same order item - combine them into 1 position
-        var grouppedOrderItems = GroupOrderItems(orderItems);
-
-        // add combined order items
-        _orderItems.Clear();
-        _orderItems.AddRange(grouppedOrderItems);
-
-        // update updateDate
-        UpdateDate = DateTime.Now;
     }
 
     // method to mark order as ready to pickup/deliver
@@ -152,5 +135,22 @@ public sealed class Order : AggregateRoot<Guid>
         }
 
         return result;
+    }
+
+    private void SetOrderItemsCollection(IEnumerable<OrderItem> orderItems)
+    {
+        // verify if order has any items
+        if (orderItems == null || !orderItems.Any())
+            throw new CannotCreateEmptyOrderException("No items ordered. Cannot create empty order.");
+
+        // group order items - if we have multiple times the same order item - combine them into 1 position
+        var grouppedOrderItems = GroupOrderItems(orderItems);
+
+        // add combined order items
+        _orderItems.Clear();
+        _orderItems.AddRange(grouppedOrderItems);
+
+        // update updateDate
+        UpdateDate = DateTime.Now;
     }
 }
