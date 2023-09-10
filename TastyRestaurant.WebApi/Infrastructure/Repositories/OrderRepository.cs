@@ -1,4 +1,6 @@
-﻿using TastyRestaurant.WebApi.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using TastyRestaurant.WebApi.Application.Orders.Exceptions;
+using TastyRestaurant.WebApi.Domain.Entities;
 using TastyRestaurant.WebApi.Domain.Repositories;
 using TastyRestaurant.WebApi.Infrastructure.Persistence;
 
@@ -15,8 +17,16 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order?> GetAsync(Guid orderId)
     {
-        var result = await _dbContext.Orders.FindAsync(orderId);
-        return result;
+        var order = await _dbContext.Orders
+            .Include(x => x.OrderItems)
+            .ThenInclude(x => x.MenuItem)
+            .ThenInclude(x => x.Category)
+            .FirstOrDefaultAsync(x => x.Id == orderId);
+
+        if (order == null)
+            throw new OrderNotFoundException(orderId);
+
+        return order;
     }
 
     public async Task AddAsync(Order order)

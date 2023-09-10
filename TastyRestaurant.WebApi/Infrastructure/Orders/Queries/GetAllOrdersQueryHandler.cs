@@ -67,7 +67,11 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, IEnum
             }
         }
 
-        var result = await query.ToListAsync(cancellationToken: cancellationToken);
+        var result = await query
+            .Include(x => x.OrderItems)
+            .ThenInclude(x => x.MenuItem)
+            .ThenInclude(x => x.Category)
+            .ToListAsync(cancellationToken: cancellationToken);
 
         return result;
     }

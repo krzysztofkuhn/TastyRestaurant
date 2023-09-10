@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TastyRestaurant.WebApi.Application.Authentication.Models;
 using TastyRestaurant.WebApi.Domain.Entities;
+using TastyRestaurant.WebApi.Domain.Enums;
 
 namespace TastyRestaurant.WebApi.Infrastructure.Persistence;
 public class ApplicationDbContextInitialiser
@@ -114,7 +115,6 @@ public class ApplicationDbContextInitialiser
             MenuItem LavaCake = MenuItem.Create(Guid.NewGuid(), "Lava Cake", DessertsCategory, 28, "lavaCake.jpg");
             MenuItem Brownie = MenuItem.Create(Guid.NewGuid(), "Brownie", DessertsCategory, 25, "brownie.jpg");
 
-
             MenuItem Beer = MenuItem.Create(Guid.NewGuid(), "Beer 0.5L", BeveragesCategory, 13, "beer.jpg");
             MenuItem Water = MenuItem.Create(Guid.NewGuid(), "Water 0.5L", BeveragesCategory, 10, "water.jpg");
             MenuItem CocaCola = MenuItem.Create(Guid.NewGuid(), "Coca-Cola 0.2L", BeveragesCategory, 11, "cocaCola.jpg");
@@ -155,7 +155,42 @@ public class ApplicationDbContextInitialiser
                 OrangeJuice
             });
 
+            var orders = new[]
+            {
+                CreateOrderWithStatus(OrderStatusEnum.Created, FrenchOnionSoup),
+                CreateOrderWithStatus(OrderStatusEnum.Created, Prawns, OrangeJuice),
+                CreateOrderWithStatus(OrderStatusEnum.Ready, Steak, Beer, Beer),
+                CreateOrderWithStatus(OrderStatusEnum.Completed, IceCream, LavaCake),
+                CreateOrderWithStatus(OrderStatusEnum.Cancelled, Water, Duck, Burger),
+
+            };
+            _context.Orders.AddRange(orders);
+
             await _context.SaveChangesAsync();
+        }
+    }
+
+    private static Order CreateOrderWithStatus(OrderStatusEnum status, params MenuItem[] selectedItems)
+    {
+        var orders = selectedItems.Select(x => OrderItem.Create(x, 1));
+        var order = Order.Create(Guid.NewGuid(), Guid.NewGuid(), orders);
+
+        switch (status)
+        {
+            case OrderStatusEnum.Created:
+                return order;
+            case OrderStatusEnum.Ready:
+                order.Ready();
+                return order;
+            case OrderStatusEnum.Completed:
+                order.Ready();
+                order.Complete();
+                return order;
+            case OrderStatusEnum.Cancelled:
+                order.Cancel();
+                return order;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(status), status, null);
         }
     }
 }
