@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TastyRestaurant.WebApi.Application.Orders.Commands;
 using TastyRestaurant.WebApi.Application.Orders.Exceptions;
@@ -11,6 +12,7 @@ using TastyRestaurant.WebApi.Mappers;
 
 namespace TastyRestaurant.WebApi.Controllers.V1;
 
+[Authorize]
 [ApiController]
 public class OrdersController : ControllerBase
 {
