@@ -1,14 +1,15 @@
-using TastyRestaurant.WebApi.Application.Services;
+using TastyRestaurant.WebApi.Infrastructure;
+using TastyRestaurant.WebApi.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
+builder.Services.AddInfrastructureServices(config);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining(typeof(Program)));
-builder.Services.AddTransient<IOrdersService, OrdersService>();
 
 var app = builder.Build();
 
@@ -17,10 +18,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Initialise and seed database
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
+    }
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,8 +2,11 @@
 
 namespace TastyRestaurant.WebApi.Domain.Entities;
 
-public sealed class MenuItem : Entity<Guid>
+public class MenuItem : Entity<Guid>
 {
+    // empty constructor for EF purposes
+    private MenuItem() { }
+
     public string Name { get; private set; }
     public MenuItemCategory Category { get; private set; }
     public decimal Price { get; private set; }

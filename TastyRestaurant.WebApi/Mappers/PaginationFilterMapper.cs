@@ -1,4 +1,4 @@
-﻿using TastyRestaurant.WebApi.Application.Filters;
+﻿using TastyRestaurant.WebApi.Application.Common.Filters;
 using TastyRestaurant.WebApi.Contracts.V1.Requests;
 
 namespace TastyRestaurant.WebApi.Mappers;

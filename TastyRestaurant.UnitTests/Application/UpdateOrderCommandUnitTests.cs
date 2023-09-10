@@ -1,8 +1,10 @@
-﻿using NSubstitute;
+﻿using MediatR;
+using NSubstitute;
 using TastyRestaurant.UnitTests.SampleData;
-using TastyRestaurant.WebApi.Application.Commands;
-using TastyRestaurant.WebApi.Application.Exceptions;
-using TastyRestaurant.WebApi.Application.Models;
+using TastyRestaurant.WebApi.Application.MenuItems.Queries;
+using TastyRestaurant.WebApi.Application.Orders.Commands;
+using TastyRestaurant.WebApi.Application.Orders.Exceptions;
+using TastyRestaurant.WebApi.Application.Orders.Models;
 using TastyRestaurant.WebApi.Domain.Entities;
 using TastyRestaurant.WebApi.Domain.Enums;
 using TastyRestaurant.WebApi.Domain.Repositories;
@@ -16,16 +18,16 @@ namespace TastyRestaurant.UnitTests.Application
         // system under test
         private readonly UpdateOrderCommandHandler _sut;
         private readonly IOrderRepository _orderRepository;
-        private readonly IMenuItemRepository _menuItemRepository;
+        private readonly ISender _mediator;
 
         public UpdateOrderCommandUnitTests()
         {
             _orderRepository = Substitute.For<IOrderRepository>();
-            _menuItemRepository = Substitute.For<IMenuItemRepository>();
+            _mediator = Substitute.For<ISender>();
             // make menu item repo return all menu items - by default
-            _menuItemRepository.GetAllAsync().Returns(MenuItemSampleData.All);
+            _mediator.Send(Arg.Any<GetAllMenuItemsQuery>()).Returns(MenuItemSampleData.All);
 
-            _sut = new UpdateOrderCommandHandler(_orderRepository, _menuItemRepository);
+            _sut = new UpdateOrderCommandHandler(_orderRepository, _mediator);
         }
         #endregion
 

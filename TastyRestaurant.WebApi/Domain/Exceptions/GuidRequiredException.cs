@@ -1,7 +1,6 @@
-﻿namespace TastyRestaurant.WebApi.Domain.Exceptions
+﻿namespace TastyRestaurant.WebApi.Domain.Exceptions;
+
+public class GuidRequiredException : Exception
 {
-    public class GuidRequiredException : Exception
-    {
-        public GuidRequiredException(string message) : base(message) { }
-    }
+    public GuidRequiredException(string message) : base(message) { }
 }

@@ -1,7 +1,6 @@
-﻿namespace TastyRestaurant.WebApi.Domain.Exceptions
+﻿namespace TastyRestaurant.WebApi.Domain.Exceptions;
+
+public class CannotCreateEmptyOrderException : Exception
 {
-    public class CannotCreateEmptyOrderException : Exception
-    {
-        public CannotCreateEmptyOrderException(string message) : base(message) { }
-    }
+    public CannotCreateEmptyOrderException(string message) : base(message) { }
 }

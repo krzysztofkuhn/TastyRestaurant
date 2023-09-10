@@ -1,8 +1,10 @@
-﻿using NSubstitute;
+﻿using MediatR;
+using NSubstitute;
 using TastyRestaurant.UnitTests.SampleData;
-using TastyRestaurant.WebApi.Application.Commands;
-using TastyRestaurant.WebApi.Application.Exceptions;
-using TastyRestaurant.WebApi.Application.Models;
+using TastyRestaurant.WebApi.Application.MenuItems.Queries;
+using TastyRestaurant.WebApi.Application.Orders.Commands;
+using TastyRestaurant.WebApi.Application.Orders.Exceptions;
+using TastyRestaurant.WebApi.Application.Orders.Models;
 using TastyRestaurant.WebApi.Domain.Entities;
 using TastyRestaurant.WebApi.Domain.Enums;
 using TastyRestaurant.WebApi.Domain.Repositories;
@@ -17,15 +19,15 @@ namespace TastyRestaurant.UnitTests.Application
         private readonly CreateOrderCommandHandler _sut;
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IMenuItemRepository _menuItemRepository;
+        private readonly IMediator _sender;
 
         public CreateOrderCommandUnitTests()
         {
             _orderRepository = Substitute.For<IOrderRepository>();
             _userRepository = Substitute.For<IUserRepository>();
-            _menuItemRepository = Substitute.For<IMenuItemRepository>();
+            _sender = Substitute.For<IMediator>();
 
-            _sut = new CreateOrderCommandHandler(_orderRepository, _userRepository, _menuItemRepository);
+            _sut = new CreateOrderCommandHandler(_orderRepository, _userRepository, _sender);
         }
         #endregion
 
@@ -35,9 +37,9 @@ namespace TastyRestaurant.UnitTests.Application
             // arrange
             // make user repo return valid user
             var validUserId = Guid.NewGuid();
-            _userRepository.GetAsync(validUserId).Returns(new Guest { Id = validUserId });
+            _userRepository.GetAsync(validUserId).Returns(new ApplicationUser { Id = validUserId.ToString() });
             // make menu item repo return all menu items
-            _menuItemRepository.GetAllAsync().Returns(MenuItemSampleData.All);
+            _sender.Send(Arg.Any<GetAllMenuItemsQuery>()).Returns(MenuItemSampleData.All);
             //make order repo save created order
             Order? createdRepoOrder = default;
             _orderRepository.When(x => x.AddAsync(Arg.Any<Order>())).Do(args => createdRepoOrder = (Order)args[0]);
@@ -69,7 +71,7 @@ namespace TastyRestaurant.UnitTests.Application
             // arrange
             // make user repo return null for valid user id
             var invalidUserId = Guid.NewGuid();
-            _userRepository.GetAsync(invalidUserId).Returns(default(Guest));
+            _userRepository.GetAsync(invalidUserId).Returns(default(ApplicationUser));
 
             //items to add
             var orderItemModels = new List<OrderItemModel>
@@ -90,7 +92,7 @@ namespace TastyRestaurant.UnitTests.Application
             // arrange
             // make user repo return valid user
             var validUserId = Guid.NewGuid();
-            _userRepository.GetAsync(validUserId).Returns(new Guest { Id = validUserId });
+            _userRepository.GetAsync(validUserId).Returns(new ApplicationUser { Id = validUserId.ToString() });
             //items to add
             var notExistingMenuItemGuid = Guid.NewGuid();
             var orderItemModels = new OrderItemModel[] { new (notExistingMenuItemGuid, 1) };

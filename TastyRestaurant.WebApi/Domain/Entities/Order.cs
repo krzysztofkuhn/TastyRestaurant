@@ -8,8 +8,11 @@ namespace TastyRestaurant.WebApi.Domain.Entities;
 // also responsible for keeping consistency rules
 public sealed class Order : AggregateRoot<Guid>
 {
+    // empty constructor for EF purposes
+    private Order() { }
+
     // original order items list - encapsulated
-    private readonly List<OrderItem> _orderItems;
+    private readonly List<OrderItem> _orderItems = new();
 
     public OrderStatusEnum Status { get; private set; }
     public Guid UserId { get; private set; }
@@ -26,7 +29,6 @@ public sealed class Order : AggregateRoot<Guid>
     private Order(Guid id, Guid userId, IEnumerable<OrderItem> initialOrderItems) : base(id)
     {
         // initialize order items collection
-        _orderItems = new List<OrderItem>();
         SetOrderItemsCollection(initialOrderItems);
 
         // assign user to order

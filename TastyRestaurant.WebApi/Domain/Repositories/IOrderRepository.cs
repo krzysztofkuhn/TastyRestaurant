@@ -1,11 +1,10 @@
 ﻿using TastyRestaurant.WebApi.Domain.Entities;
 
-namespace TastyRestaurant.WebApi.Domain.Repositories
+namespace TastyRestaurant.WebApi.Domain.Repositories;
+
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        Task<Order?> GetAsync(Guid orderId);
-        Task AddAsync(Order order);
-        Task UpdateAsync(Order order);
-    }
+    Task<Order?> GetAsync(Guid orderId);
+    Task AddAsync(Order order);
+    Task UpdateAsync(Order order);
 }
