@@ -129,31 +129,31 @@ public class ApplicationDbContextInitialiser
                 BeveragesCategory
             });
 
-            //await _context.MenuItems.AddRangeAsync(new[]
-            //{
-            //    FrenchOnionSoup,
-            //    Prawns,
-            //    BeefTartare,
-            //    SeafoodStarter,
-            //    BeefCarpaccio,
-            //    CheeseSalad,
-            //    ChefsSalad,
-            //    GoatCheeseSalad,
-            //    Steak,
-            //    GrilledChicken,
-            //    Burger,
-            //    Duck,
-            //    Mussels,
-            //    LemonTart,
-            //    ChocolateCake,
-            //    IceCream,
-            //    LavaCake,
-            //    Brownie,
-            //    Beer,
-            //    Water,
-            //    CocaCola,
-            //    OrangeJuice
-            //});
+            await _context.MenuItems.AddRangeAsync(new[]
+            {
+                FrenchOnionSoup,
+                Prawns,
+                BeefTartare,
+                SeafoodStarter,
+                BeefCarpaccio,
+                CheeseSalad,
+                ChefsSalad,
+                GoatCheeseSalad,
+                Steak,
+                GrilledChicken,
+                Burger,
+                Duck,
+                Mussels,
+                LemonTart,
+                ChocolateCake,
+                IceCream,
+                LavaCake,
+                Brownie,
+                Beer,
+                Water,
+                CocaCola,
+                OrangeJuice
+            });
 
             await _context.SaveChangesAsync();
         }

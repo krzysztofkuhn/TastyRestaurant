@@ -45,6 +45,28 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, IEnum
                 query = query.Where(x => x.Status == request.Filter.Status.Value);
         }
 
+        query = query.OrderBy(x => x.CreationDate);
+
+        if (request.Pagination != null)
+        {
+            var pageNumber = request.Pagination.PageNumber;
+            var pageSize = request.Pagination.PageSize;
+
+            if (pageNumber.HasValue || pageSize.HasValue)
+            {
+                if (pageNumber is null || request.Pagination.PageSize is null)
+                    throw new ArgumentNullException("Both PageNumber and PageSize required when passing pagination params");
+
+                if (pageNumber == 0)
+                    throw new ArgumentOutOfRangeException("PageNumber must be greater than 0.");
+
+                if (request.Pagination.PageSize == 0)
+                    throw new ArgumentOutOfRangeException("PageSize must be greater than 0.");
+
+                query = query.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
+            }
+        }
+
         var result = await query.ToListAsync(cancellationToken: cancellationToken);
 
         return result;
