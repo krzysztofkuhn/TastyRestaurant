@@ -13,18 +13,20 @@ public class OrderRepository : IOrderRepository
         _dbContext = dbContext;
     }
 
-    public Task<Order?> GetAsync(Guid orderId)
+    public async Task<Order?> GetAsync(Guid orderId)
     {
-        throw new NotImplementedException();
+        var result = await _dbContext.Orders.FindAsync(orderId);
+        return result;
     }
 
-    public Task AddAsync(Order order)
+    public async Task AddAsync(Order order)
     {
-        throw new NotImplementedException();
+        await _dbContext.Orders.AddAsync(order);
     }
 
-    public Task UpdateAsync(Order order)
+    public async Task UpdateAsync(Order order)
     {
-        throw new NotImplementedException();
+        _dbContext.Orders.Update(order);
+        await _dbContext.SaveChangesAsync();
     }
 }

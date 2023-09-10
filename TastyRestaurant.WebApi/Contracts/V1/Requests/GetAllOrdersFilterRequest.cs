@@ -14,7 +14,7 @@ public record GetAllOrdersFilterRequest
     public decimal? PriceTo { get; init; }
     
     [FromQuery(Name = "userId")]
-    public int? UserId { get; init; }
+    public Guid? UserId { get; init; }
     
     [FromQuery(Name = "creationDateFrom")]
     public DateTime? CreationDateFrom { get; init; }

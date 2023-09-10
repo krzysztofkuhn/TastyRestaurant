@@ -6,7 +6,7 @@ public record GetAllOrdersFilter(
     OrderStatusEnum? Status,
     decimal? PriceFrom,
     decimal? PriceTo,
-    int? UserId,
+    Guid? UserId,
     DateTime? CreationDateFrom,
     DateTime? CreationDateTo,
     DateTime? UpdateDateFrom,
