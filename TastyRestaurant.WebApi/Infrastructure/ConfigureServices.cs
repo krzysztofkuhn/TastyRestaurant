@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TastyRestaurant.WebApi.Application.Authentication;
 using TastyRestaurant.WebApi.Domain.Entities;
 using TastyRestaurant.WebApi.Domain.Repositories;
@@ -40,35 +42,31 @@ public static class ConfigureServices
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
-        // Adding authentication v1
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
-
+        
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
-        //// Adding Authentication v2
-        //services.AddAuthentication(options =>
-        //{
-        //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        //})
+        // Adding Authentication
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
 
-        //// Adding Jwt Bearer v2
-        //.AddJwtBearer(options =>
-        //{
-        //    options.SaveToken = true;
-        //    options.RequireHttpsMetadata = false;
-        //    options.TokenValidationParameters = new TokenValidationParameters()
-        //    {
-        //        ValidateIssuer = true,
-        //        ValidateAudience = true,
-        //        ValidAudience = configuration["JWT:ValidAudience"],
-        //        ValidIssuer = configuration["JWT:ValidIssuer"],
-        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-        //    };
-        //});
+        // Adding Jwt Bearer
+        .AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]))
+            };
+        });
 
         // Adding Authorization
         services.AddAuthorization();
