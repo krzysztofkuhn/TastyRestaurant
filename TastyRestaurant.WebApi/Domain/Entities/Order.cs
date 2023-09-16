@@ -23,7 +23,11 @@ public sealed class Order : AggregateRoot<Guid>
     public IReadOnlyList<OrderItem> OrderItems => _orderItems.ToList();
 
     // order price is a sum of all order items, can be calculated on the fly
-    public decimal Price => _orderItems.Sum(x => x.TotalPrice);
+    public decimal Price
+    {
+        get { return _orderItems.Sum(x => x.TotalPrice); }
+        private set {} // added private setter to allow EF to store this calculated property in the DB
+    }
 
     // private constructor - order creation only via CreateOrder factory method
     private Order(Guid id, Guid userId, IEnumerable<OrderItem> initialOrderItems) : base(id)
