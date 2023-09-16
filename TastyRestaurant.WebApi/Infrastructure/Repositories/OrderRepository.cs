@@ -32,6 +32,7 @@ public class OrderRepository : IOrderRepository
     public async Task AddAsync(Order order)
     {
         await _dbContext.Orders.AddAsync(order);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Order order)

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TastyRestaurant.WebApi.Application.Orders.Commands;
@@ -57,14 +58,16 @@ public class OrdersController : ControllerBase
     [Route(ApiRoutes.Orders.Create)]
     public async Task<IActionResult> Create([FromBody] CreateOrderRequest createOrderRequest)
     {
-        var createOrderCommand = new CreateOrderCommand(createOrderRequest.UserId, createOrderRequest.OrderItems.Select(x => new OrderItemModel(x.MenuItemId, x.Quantity)));
+        var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        var userGuid = userId is null ? Guid.Empty : Guid.Parse(userId);
+        var createOrderCommand = new CreateOrderCommand(userGuid, createOrderRequest.OrderItems.Select(x => new OrderItemModel(x.MenuItemId, x.Quantity)));
         var createdOrder = await _mediator.Send(createOrderCommand);
 
-        var locationUrl = UrlHelper.GetResourceLocationUrl(HttpContext, ApiRoutes.Orders.Get.Replace("{orderId}", createdOrder.Id.ToString()));
+        var locationUrl = UrlHelper.GetResourceLocationUrl(HttpContext, ApiRoutes.Orders.Get.Replace("{orderId:guid}", createdOrder.Id.ToString()));
 
         return Created(locationUrl, null);
-    }        
-        
+    }
+
     [HttpPut]
     [Route(ApiRoutes.Orders.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid orderId, [FromBody] UpdateOrderRequest updateOrderRequest)
