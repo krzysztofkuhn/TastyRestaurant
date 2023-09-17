@@ -4,10 +4,8 @@ This is an online Restaurant API application.
 It was created using ASP.NET Core Web API.
 
 ## Prerequisites
-
-### .NET
 1. [Install .NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-2. [Install cURL]- for Windows] (https://curl.se/download.html)
+2. [Install cURL- for Windows](https://curl.se/download.html)
 
 ### Running the application
 1. clone or download the repository
@@ -16,8 +14,10 @@ It was created using ASP.NET Core Web API.
 ```
     dotnet run -lp https --project TastyRestaurant.WebApi
 ```
-This will run the application with the `https` profile.
+this will run the application with the `https` profile
+
 4. during first application startup it will create a new Sqlite file for application data (TastyRestaurant.db)
+
 5. after successful build the console should contain following result:
 ```
 info: Microsoft.Hosting.Lifetime[14]
@@ -37,8 +37,6 @@ info: Microsoft.Hosting.Lifetime[0]
 The TastyRestaurant REST API can run standalone. 
 You can run the WebAPI project and make requests to various endpoints using the Swagger UI (or a client of your choice).
 Go to https://localhost:7258/swagger/
-
-<img width="1200" alt="image" src="https://user-images.githubusercontent.com/95136/204315486-86d25a5f-1164-467a-9891-827343b9f0e8.png">
 
 Before executing any requests, you need to create a user and get an auth token.
 
