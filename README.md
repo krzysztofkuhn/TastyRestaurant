@@ -7,7 +7,7 @@ It was created using ASP.NET Core Web API.
 
 ### .NET
 1. [Install .NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-2. [* Install cURL]- for Windows] (https://curl.se/download.html)
+2. [Install cURL]- for Windows] (https://curl.se/download.html)
 
 ### Running the application
 1. clone or download the repository
