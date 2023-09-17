@@ -2,4 +2,4 @@
 
 namespace TastyRestaurant.WebApi.Contracts.V1.Requests;
 
-public record UpdateOrderRequest(int OrderId, OrderStatusEnumContract Status, IEnumerable<OrderItemRequest> OrderItems);
+public record UpdateOrderRequest(OrderStatusEnumContract Status, IEnumerable<OrderItemRequest> OrderItems);
